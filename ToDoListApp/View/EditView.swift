@@ -33,7 +33,7 @@ struct EditView: View {
                 }
                 .padding(.vertical)
                 
-                TextField("task.name", text:  $newName)
+                TextField("Task name", text:  $newName)
                 .padding()
                 .background(Color(.systemGray6))
                 .cornerRadius(10)
