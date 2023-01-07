@@ -16,7 +16,7 @@ public class Task: NSManagedObject {
     @NSManaged public var priorityNum: Int32
     @NSManaged public var order: Int64
     @NSManaged public var date: Date
-    @NSManaged public var alert: Date
+    @NSManaged public var alarm: Date
 }
 
 extension Task: Identifiable {
@@ -41,7 +41,7 @@ enum Priority: Int {
         case Priority.low.rawValue: return "low"
         case Priority.normal.rawValue: return "normal"
         case Priority.high.rawValue: return "high"
-        
+            
         default: return ""
         }
     }
@@ -58,14 +58,3 @@ enum Priority: Int {
         }
     }
 }
-//struct Task_CoreData: View {
-//    var body: some View {
-//        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-//    }
-//}
-//
-//struct Task_CoreData_Previews: PreviewProvider {
-//    static var previews: some View {
-//        Task_CoreData()
-//    }
-//}

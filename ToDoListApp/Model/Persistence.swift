@@ -61,10 +61,10 @@ struct PersistenceController {
         dateAttribute.type = .date
         taskEntity.properties.append(dateAttribute)
         
-        let alertAttribute = NSAttributeDescription()
-        alertAttribute.name = "alert"
-        alertAttribute.type = .date
-        taskEntity.properties.append(alertAttribute)
+        let alarmAttribute = NSAttributeDescription()
+        alarmAttribute.name = "alarm"
+        alarmAttribute.type = .date
+        taskEntity.properties.append(alarmAttribute)
         
         let orderAttribute = NSAttributeDescription()
         orderAttribute.name = "order"

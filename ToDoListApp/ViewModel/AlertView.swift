@@ -1,14 +1,13 @@
 //
-//  CalendarRectangleView.swift
+//  AlertView.swift
 //  ToDoListApp
 //
-//  Created by Amelie Pocchiolo on 05/01/2023.
+//  Created by Amelie Pocchiolo on 06/01/2023.
 //
 
 import SwiftUI
 
-struct CalendarRectangleView: View {
-    
+struct AlertView: View {
     @ObservedObject var task: Task
     @Environment(\.managedObjectContext) private var viewContext
     
@@ -16,27 +15,25 @@ struct CalendarRectangleView: View {
         ZStack{
             RoundedRectangle(cornerRadius: 10, style: .continuous)
                 .stroke(task.priority.priorityColor(), lineWidth: 10)
-                .frame(width: 300, height: 300)
+                .frame(width: 300, height: 100)
             VStack {
-                Text(String(task.date.formatted(.dateTime.weekday(.wide))))
-                    .font(.system(size: 36, weight: .black, design: .serif))
+                Text("Alert for")
+                    .font(.system(size: 16, weight: .black, design: .serif))
                     .fontWeight(.bold)
-                Text(String(task.date.formatted(.dateTime.day())))
-                    .font(.system(size: 56, weight: .black, design: .serif))
-                    .fontWeight(.bold)
-                Text(String(task.date.formatted(.dateTime.month(.wide))))
-                    .font(.system(size: 36, weight: .black, design: .serif))
-                    .fontWeight(.bold)
-                Text(String(task.date.formatted(.dateTime.hour().minute())))
+                Text(String(task.date.formatted(.dateTime.day().month().year())))
                     .font(.system(size: 26, weight: .black, design: .serif))
                     .fontWeight(.bold)
-                    .padding()
+                Text(String(task.date.formatted(.dateTime.minute().hour())))
+                    .font(.system(size: 26, weight: .black, design: .serif))
+                    .fontWeight(.bold)
             }
+            
         }
     }
 }
 
-struct DetailTaskView_Previews: PreviewProvider {
+
+struct AlertView_Previews: PreviewProvider {
     static var previews: some View {
         let testTask = Task(context: PersistenceController.preview.container.viewContext)
         testTask.id = UUID()
@@ -47,6 +44,6 @@ struct DetailTaskView_Previews: PreviewProvider {
         testTask.date = Date.now
         testTask.alarm = Date.now
         
-        return CalendarRectangleView(task: testTask)
+        return AlertView(task: testTask)
     }
 }

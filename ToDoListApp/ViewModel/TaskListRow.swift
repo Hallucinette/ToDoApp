@@ -10,7 +10,6 @@ import SwiftUI
 struct TaskListRow: View {
     @ObservedObject var task: Task
     @Environment(\.managedObjectContext) private var viewContext
-    // save the update
     
     var body: some View {
         Toggle(isOn: self.$task.complete) {
@@ -18,11 +17,6 @@ struct TaskListRow: View {
                 Text(self.task.name)
                 
                 Spacer()
-                
-             //   Text(String(self.task.date.formatted(.dateTime.hour().minute())))
-                
-              //  time(task: task)
-
                 Spacer()
                 
                 Circle()
@@ -41,15 +35,6 @@ struct TaskListRow: View {
             }
         }
     }
-    
-//    private let itemFormatter: DateFormatter = {
-//        let formatter = DateFormatter()
-//        formatter.dateStyle = .short
-//        formatter.timeStyle = .short
-//       // date.formatted(.dateTime.day())
-//        return formatter
-//    }()
-    
 }
 
 struct TaskListRow_Previews: PreviewProvider {
@@ -65,11 +50,3 @@ struct TaskListRow_Previews: PreviewProvider {
         return TaskListRow(task: testTask)
     }
 }
-//
-//struct time: View {
-//    @ObservedObject var task: Task
-//
-//    var body: some View {
-//        Text(String(self.task.date.formatted(.dateTime.hour().minute())))
-//    }
-//}

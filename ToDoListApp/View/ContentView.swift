@@ -24,9 +24,10 @@ struct ContentView: View {
     )
     
     private var tasks: FetchedResults<Task>
-    
-    @State private var showNewTask: Bool = false
+    let notify = NotificationHandler()
+
     @State private var searchText: String = ""
+    @State private var showNewTask: Bool = false
 
     var body: some View {
         NavigationView{
@@ -45,31 +46,42 @@ struct ContentView: View {
                     .onDelete(perform: deleteTask)
                 }
                 
-                if self.showNewTask {
-                    BlankView()
-                        .onTapGesture {
-                            self.showNewTask = false
-                        }
-
-                    NewTasksView(isShow: self.$showNewTask)
-                        .transition(.move(edge: .bottom))
-                        .animation(.default, value: self.showNewTask)
+//                ZStack {
+//                    VStack{
+//                        Text("Not working Notification?")
+//                            .foregroundColor(.gray)
+//                            .italic()
+//                        Button("Request permissions") {
+//                            notify.askPermission()
+//                        }
+//                    }
+//                }
+                if tasks.count == 0 {
+                    VStack{
+                        Image("no-data")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 200, height: 200)
+                        Text("Add a New Task")
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .foregroundColor(.accentColor)
+                    }
                 }
-            }
+        }
             .navigationTitle("Task")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        self.showNewTask = true
-                    } label: {
+                    NavigationLink(destination: {
+                        NewTasksView()
+                    }, label: {
                         Image(systemName: "plus.circle.fill")
                             .foregroundColor(.accentColor)
-                    }
+                    })
                 }
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     EditButton()
-                    
                         .foregroundColor(.accentColor)
                         .opacity(self.tasks.count == 0 ? 0.5 : 1)
                         .disabled(self.tasks.count == 0)
@@ -113,24 +125,6 @@ struct ContentView: View {
             print(error.localizedDescription)
         }
     }
-    
-    //delete function
-    // this function is given by Apple in CoreData template
-    
-//    // 2.
-//     private func deleteTask(offsets: IndexSet) {
-//         withAnimation {
-//             tasks.remove(atOffsets: offsets)
-//
-//             do {
-//                 try viewContext.save()
-//             }
-//             catch {
-//                 let nsError = error as NSError
-//                 print(nsError.localizedDescription)
-//             }
-//         }
-//     }
     
     private func deleteTask(index: IndexSet) -> Void {
         withAnimation {

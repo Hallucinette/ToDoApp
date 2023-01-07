@@ -22,10 +22,8 @@
 		7B5CE7962966E30B00AAF8EA /* CalendarRectangleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5CE7952966E30B00AAF8EA /* CalendarRectangleView.swift */; };
 		7B5CE7982966E75B00AAF8EA /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5CE7972966E75B00AAF8EA /* DetailView.swift */; };
 		7B5CE7C329675DB700AAF8EA /* EditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5CE7C229675DB700AAF8EA /* EditView.swift */; };
-		7B75D918296854D200DF48CE /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B75D910296854D200DF48CE /* NotificationManager.swift */; };
-		7B75D91B296854D200DF48CE /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B75D914296854D200DF48CE /* NotificationHelper.swift */; };
-		7B75D91D296854D200DF48CE /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7B75D916296854D200DF48CE /* Info.plist */; };
-		7B75D91E296854D200DF48CE /* LocalNotificationsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B75D917296854D200DF48CE /* LocalNotificationsApp.swift */; };
+		7BAC3AE12968616B00266742 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAC3AE02968616B00266742 /* Notifications.swift */; };
+		7BAC3AE62968721200266742 /* AlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAC3AE52968721200266742 /* AlertView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,10 +43,8 @@
 		7B5CE7952966E30B00AAF8EA /* CalendarRectangleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarRectangleView.swift; sourceTree = "<group>"; };
 		7B5CE7972966E75B00AAF8EA /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		7B5CE7C229675DB700AAF8EA /* EditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditView.swift; sourceTree = "<group>"; };
-		7B75D910296854D200DF48CE /* NotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
-		7B75D914296854D200DF48CE /* NotificationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationHelper.swift; sourceTree = "<group>"; };
-		7B75D916296854D200DF48CE /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		7B75D917296854D200DF48CE /* LocalNotificationsApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalNotificationsApp.swift; sourceTree = "<group>"; };
+		7BAC3AE02968616B00266742 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
+		7BAC3AE52968721200266742 /* AlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,7 +82,6 @@
 				7B5CE7932966D91400AAF8EA /* ViewModel */,
 				7B5CE7942966D93900AAF8EA /* Model */,
 				7B5CE7772965773700AAF8EA /* Assets.xcassets */,
-				7B75D916296854D200DF48CE /* Info.plist */,
 				7B5CE77E2965773700AAF8EA /* ToDoListApp.xcdatamodeld */,
 				7B5CE7792965773700AAF8EA /* Preview Content */,
 			);
@@ -118,6 +113,7 @@
 				7B5CE79029659A7A00AAF8EA /* PriorityView.swift */,
 				7B5CE78C296590FE00AAF8EA /* BlankView.swift */,
 				7B5CE7952966E30B00AAF8EA /* CalendarRectangleView.swift */,
+				7BAC3AE52968721200266742 /* AlertView.swift */,
 				7B5CE788296580FB00AAF8EA /* TaskListRow.swift */,
 				7B5CE78A2965838200AAF8EA /* CheckboxStyle.swift */,
 			);
@@ -127,11 +123,9 @@
 		7B5CE7942966D93900AAF8EA /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				7B75D917296854D200DF48CE /* LocalNotificationsApp.swift */,
-				7B75D910296854D200DF48CE /* NotificationManager.swift */,
-				7B75D914296854D200DF48CE /* NotificationHelper.swift */,
 				7B5CE77C2965773700AAF8EA /* Persistence.swift */,
 				7B5CE78629657E0300AAF8EA /* Task CoreData.swift */,
+				7BAC3AE02968616B00266742 /* Notifications.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -195,7 +189,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				7B5CE77B2965773700AAF8EA /* Preview Assets.xcassets in Resources */,
-				7B75D91D296854D200DF48CE /* Info.plist in Resources */,
 				7B5CE7782965773700AAF8EA /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -209,18 +202,17 @@
 			files = (
 				7B5CE78B2965838200AAF8EA /* CheckboxStyle.swift in Sources */,
 				7B5CE7982966E75B00AAF8EA /* DetailView.swift in Sources */,
-				7B75D91E296854D200DF48CE /* LocalNotificationsApp.swift in Sources */,
 				7B5CE77D2965773700AAF8EA /* Persistence.swift in Sources */,
 				7B5CE79129659A7A00AAF8EA /* PriorityView.swift in Sources */,
-				7B75D918296854D200DF48CE /* NotificationManager.swift in Sources */,
 				7B5CE78729657E0300AAF8EA /* Task CoreData.swift in Sources */,
-				7B75D91B296854D200DF48CE /* NotificationHelper.swift in Sources */,
 				7B5CE7762965773500AAF8EA /* ContentView.swift in Sources */,
 				7B5CE7962966E30B00AAF8EA /* CalendarRectangleView.swift in Sources */,
 				7B5CE7C329675DB700AAF8EA /* EditView.swift in Sources */,
+				7BAC3AE12968616B00266742 /* Notifications.swift in Sources */,
 				7B5CE789296580FB00AAF8EA /* TaskListRow.swift in Sources */,
 				7B5CE78D296590FE00AAF8EA /* BlankView.swift in Sources */,
 				7B5CE7742965773500AAF8EA /* ToDoListAppApp.swift in Sources */,
+				7BAC3AE62968721200266742 /* AlertView.swift in Sources */,
 				7B5CE78F2965945300AAF8EA /* NewTasksView.swift in Sources */,
 				7B5CE7802965773700AAF8EA /* ToDoListApp.xcdatamodeld in Sources */,
 			);

@@ -9,36 +9,33 @@ import SwiftUI
 
 struct NewTasksView: View {
  
+    @Environment(\.managedObjectContext) private var viewContext
+    @Environment(\.dismiss) var dismiss
+    
     @FetchRequest(
         entity: Task.entity(),
         sortDescriptors: [
             NSSortDescriptor(keyPath: \Task.complete, ascending:  true),
             NSSortDescriptor(keyPath: \Task.priorityNum, ascending:  false),
             NSSortDescriptor(keyPath: \Task.date, ascending:  false)
-        
         ],
         animation: .default
     )
     
     private var tasks: FetchedResults<Task>
     
-    @Binding var isShow: Bool
-    @Environment(\.managedObjectContext) private var viewContext
-    
     @State private var taskName: String = ""
     @State private var taskPriority: Priority = .normal
     @State private var isEditing: Bool = false
     
     @State private var taskdate = Date()
-    @State private var taskAlert = Date()
+    @State private var taskAlarm = Date()
     
-   // let notify = NotificationData()
+    let notify = NotificationHandler()
     
     var body: some View {
         ScrollView {
             VStack{
-               // Spacer()
-                
                 VStack(alignment: .leading) {
                     HStack {
                         Text("Add new Task")
@@ -46,15 +43,8 @@ struct NewTasksView: View {
                             .fontWeight(.bold)
                         
                         Spacer()
-                        
-                        Button(action: {
-                            self.isShow = false
-                        }) {
-                            Image(systemName: "xmax.circle.fill")
-                                .font(.title3)
-                                .foregroundColor(self.taskPriority.priorityColor())
-                        }
                     }
+                    .padding(.vertical)
                     
                     TextField("New task Name", text:  self.$taskName, onEditingChanged:
                     {
@@ -66,52 +56,60 @@ struct NewTasksView: View {
                     .cornerRadius(10)
                     .padding(.bottom)
                     
-                    HStack {
+                    HStack{
+                        
                         Text("Priority")
                             .fontWeight(.semibold)
-                        Spacer()
+                            .padding(.vertical)
                         
-                        PriorityView(priorityTitle: "High", selectedPriority: self.$taskPriority)
-                            .onTapGesture {
-                                self.taskPriority = .high
-                            }
-                        PriorityView(priorityTitle: "Normal", selectedPriority: self.$taskPriority)
-                            .onTapGesture {
-                                self.taskPriority = .normal
-                            }
-                        PriorityView(priorityTitle: "Low", selectedPriority: self.$taskPriority)
-                            .onTapGesture {
-                                self.taskPriority = .low
-                                
-                            }
+                        Spacer()
+
+                            PriorityView(priorityTitle: "High", selectedPriority: self.$taskPriority)
+                                .onTapGesture {
+                                    self.taskPriority = .high
+                                }
+                            PriorityView(priorityTitle: "Normal", selectedPriority: self.$taskPriority)
+                                .onTapGesture {
+                                    self.taskPriority = .normal
+                                }
+                            PriorityView(priorityTitle: "Low", selectedPriority: self.$taskPriority)
+                                .onTapGesture {
+                                    self.taskPriority = .low
+                                    
+                                }
                     }
                     .padding(.bottom)
-
-                    DatePicker("Date", selection: self.$taskdate , in: Date.now...,displayedComponents: [.date, .hourAndMinute])
-                    .accentColor(.pink)
-                    .fontWeight(.semibold)
                     
-                    DatePicker("Alert", selection: self.$taskAlert , in: Date.now...,displayedComponents: [.date, .hourAndMinute])
-                    .accentColor(.pink)
-                    .fontWeight(.semibold)
+                    VStack{
+                        DatePicker("Date", selection: self.$taskdate , in: Date.now...,displayedComponents: [.date])
+                           //.accentColor(.accentColor)
+                            .fontWeight(.semibold)
+                            .padding(.vertical)
+                        
+                        DatePicker("Alarm", selection: self.$taskAlarm , in: Date.now...,displayedComponents: [.date, .hourAndMinute])
+                            //.accentColor(.accentColor)
+                            .fontWeight(.semibold)
+                            .padding(.vertical)
+                    }
                     
+                    Spacer()
                     
                     Button {
-                        
                         notify.sendNotification(
-                            date: taskAlert,
+                            date: taskAlarm,
                             type: "date",
-                            title: "Notification programmé",
-                            body: "This is a reminder for you task")
+                            title: "Date based notification",
+                            body: "Hey ! You need to do \(taskName) before the \(taskdate). It's \($taskPriority) priority")
+                        
                         guard self.taskName.trimmingCharacters(in: .whitespaces) != ""
                         else {
                             return
                         }
                         
-                        self.isShow = false
-                        self.addNewTask(name: self.taskName, date: self.taskdate, priority: self.taskPriority, alert: taskAlert)
+                        self.addNewTask(name: self.taskName, date: self.taskdate, priority: self.taskPriority, alarm: self.taskAlarm)
                         
-                        // here xe will ne the code to add to Coredata
+                        dismiss()
+                        
                     } label: {
                         Text("Add new task")
                             .font(.system(.title3, design: .rounded))
@@ -120,22 +118,16 @@ struct NewTasksView: View {
                             .padding()
                             .frame(maxWidth: .infinity)
                             .background(.pink)
-                        
                     }
                     .cornerRadius(10)
                     .padding(.vertical)
-
                 }
                 .padding()
-                .background(Color.white)
-                .cornerRadius(10, antialiased:  true)
-               // .offset(y: self.isEditing ? -320 : 0)
             }
-            .edgesIgnoringSafeArea(.bottom)
         }
     }
     
-    private func addNewTask(name: String, date: Date, priority: Priority, alert: Date) -> Void {
+    private func addNewTask(name: String, date: Date, priority: Priority, alarm: Date) -> Void {
         let newTask  = Task(context: viewContext)
         newTask.id = UUID()
         newTask.name = name
@@ -143,7 +135,7 @@ struct NewTasksView: View {
         newTask.complete = false
         newTask.order = (tasks.last?.order ?? 0) + 1
         newTask.date = date
-        newTask.alert = date
+        newTask.alarm = alarm
         
         do {
             try viewContext.save()
@@ -155,6 +147,6 @@ struct NewTasksView: View {
 
 struct NewTasksView_Previews: PreviewProvider {
     static var previews: some View {
-        NewTasksView(isShow: .constant(true))
+        NewTasksView()
     }
 }

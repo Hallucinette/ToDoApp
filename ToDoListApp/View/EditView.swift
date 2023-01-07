@@ -12,34 +12,37 @@ struct EditView: View {
     @ObservedObject var task: Task
     @Environment(\.managedObjectContext) private var viewContext
     
-   // @State private var taskName: String = ""
     @State private var newName: String = ""
-   // @State private var taskPriority: Priority = .normal
     @State private var newPriority: Priority = .high
     @State private var newDate: Date = .now
-    @State private var newAlert: Date = .now
+    @State private var newAlarm: Date = .now
+    
+    let notify = NotificationHandler()
     
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
         ScrollView {
-            
-            Text("Update Task's Data")
-                .fontWeight(.semibold)
-            
             VStack(alignment: .leading){
+                HStack {
+                    Text("Update Data")
+                        .font(.system(.title, design: .rounded))
+                        .fontWeight(.bold)
+                    
+                    Spacer()
+                }
+                .padding(.vertical)
                 
-                TextField("New task Name", text:  $task.name)
+                TextField("task.name", text:  $newName)
                 .padding()
                 .background(Color(.systemGray6))
                 .cornerRadius(10)
                 .padding(.bottom)
-                // PRIORITY
-                
                 
                 HStack {
                     Text("Priority")
                         .fontWeight(.semibold)
+                    
                     Spacer()
                     
                     PriorityView(priorityTitle: "High", selectedPriority: $newPriority)
@@ -55,45 +58,53 @@ struct EditView: View {
                             newPriority = .low
 
                         }
-                        
                 }
-                .padding(.vertical)
-                
-                // DATE
+                .padding(.bottom)
 
-                DatePicker("Select a date", selection: self.$newDate , in: Date.now...,displayedComponents: [.date, .hourAndMinute])
-                .accentColor(.pink)
-                .fontWeight(.semibold)
-                .padding(.vertical)
+                VStack{
+                    DatePicker("Date", selection: self.$newDate , in: Date.now...,displayedComponents: [.date])
+                        //.accentColor(.pink)
+                        .fontWeight(.semibold)
+                        .padding(.vertical)
+                }
                 
-                //ALERT
+                VStack{
+                    DatePicker("Alarm", selection: self.$newAlarm , in: Date.now...,displayedComponents: [.date, .hourAndMinute])
+                        //.accentColor(.pink)
+                        .fontWeight(.semibold)
+                        .padding(.vertical)
+                }
                 
-                DatePicker("Alert", selection: self.$newAlert , in: Date.now...,displayedComponents: [.date, .hourAndMinute])
-                .accentColor(.pink)
-                .fontWeight(.semibold)
-                .padding(.vertical)
-                
-                
-                
-                
-                // ****************************//
-                
-                
+                Spacer()
+               
                 Button {
-                    if !task.name.isEmpty && !newName.isEmpty {
+                    
+                    notify.sendNotification(
+                        date: newAlarm,
+                        type: "date",
+                        title: "ToDo List",
+                        body: "Hey ! You need to do \(newName) before the \(newDate). It's \(newPriority) priority")
+                    
+                    if !newName.isEmpty  {
                         task.name = newName
-                        //self.updateTask()
+                        self.updateTask()
                     }
                     
                     if  task.priority != newPriority
                     {
                         task.priority = newPriority
-   //                     self.updateTask()
+                        self.updateTask()
                     }
-   //                 if task.date != newDate {
+                    if task.date != newDate {
                         task.date = newDate
                         self.updateTask()
-  //                  }
+                    }
+                    
+                    if task.alarm != newAlarm {
+                        task.alarm = newAlarm
+                        self.updateTask()
+                    }
+                    
                     dismiss()
                     
                 } label: {
@@ -103,12 +114,10 @@ struct EditView: View {
                         .foregroundColor(.white)
                         .padding()
                         .frame(maxWidth: .infinity)
-                        .background(Color(.orange))
-                    
+                        .background(.pink)
                 }
                 .cornerRadius(10)
                 .padding(.vertical)
-                
             }
             .padding()
         }
@@ -124,15 +133,6 @@ struct EditView: View {
             fatalError("Unresolved error \(nsError.localizedDescription), \(nsError.userInfo)")
         }
     }
-    
-//    struct InitNewDataTask {
-//        @ObservedObject var task: Task
-//        var newAlert: Date
-//        init() {
-//            newAlert = task.alert
-//        }
-//    }
-  //  var newData = InitNewDataTask()
 }
 
 struct EditView_Previews: PreviewProvider {
@@ -144,7 +144,6 @@ struct EditView_Previews: PreviewProvider {
         testTask.priority = .high
         testTask.order = 1
         testTask.date = Date.now
-        testTask.alert = Date.now
         
         return EditView(task: testTask)
     }

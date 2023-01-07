@@ -12,7 +12,6 @@ struct PriorityView: View {
     let priorityTitle: String
     @Binding var selectedPriority: Priority
     
-    
     var body: some View {
         Text(priorityTitle)
             .font(.system(.headline, design: .rounded))
