@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DetailView: View {
-    @ObservedObject var task: Task
+    @ObservedObject var task: TaskList
     @Environment(\.managedObjectContext) private var viewContext
     
     
@@ -28,7 +28,7 @@ struct DetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                ShareLink(item: "Hey ! You have a New Task ! \(task.name) it must be done before \(task.date.formatted()). It's \(task.priority) priority")
+                ShareLink(item: "Hey ! You have a New Task ! \(task.name). It's \(task.priority) priority")
             }
             ToolbarItem(placement: .navigationBarTrailing) {
                 NavigationLink(destination: {
@@ -44,7 +44,7 @@ struct DetailView: View {
 
 struct DetailView_Previews: PreviewProvider {
     static var previews: some View {
-        let testTask = Task(context: PersistenceController.preview.container.viewContext)
+        let testTask = TaskList(context: PersistenceController.preview.container.viewContext)
         testTask.id = UUID()
         testTask.name = "Test Task"
         testTask.complete = false

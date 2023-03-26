@@ -9,13 +9,14 @@ import SwiftUI
 import Foundation
 
 struct EditView: View {
-    @ObservedObject var task: Task
+    @ObservedObject var task: TaskList
     @Environment(\.managedObjectContext) private var viewContext
     
     @State private var newName: String = ""
     @State private var newPriority: Priority = .high
     @State private var newDate: Date = .now
     @State private var newAlarm: Date = .now
+    @State var vm = ViewModel()
     
     let notify = NotificationHandler()
     
@@ -33,7 +34,7 @@ struct EditView: View {
                 }
                 .padding(.vertical)
                 
-                TextField("Task name", text:  $newName)
+                TextField("\(task.name)", text: $newName)
                 .padding()
                 .background(Color(.systemGray6))
                 .cornerRadius(10)
@@ -44,7 +45,6 @@ struct EditView: View {
                         .fontWeight(.semibold)
                     
                     Spacer()
-                    
                     PriorityView(priorityTitle: "High", selectedPriority: $newPriority)
                         .onTapGesture {
                             newPriority = .high
@@ -59,20 +59,29 @@ struct EditView: View {
 
                         }
                 }
+                .onAppear {
+                    newPriority = task.priority
+                }
                 .padding(.bottom)
 
                 VStack{
-                    DatePicker("Date", selection: self.$newDate , in: Date.now...,displayedComponents: [.date])
-                        //.accentColor(.pink)
+                    DatePicker("Date", selection: self.$newDate , in: task.date...,displayedComponents: [.date])
+                        .accentColor(.pink)
                         .fontWeight(.semibold)
                         .padding(.vertical)
+                        .onAppear {
+                            newDate = task.date
+                        }
                 }
                 
                 VStack{
-                    DatePicker("Alarm", selection: self.$newAlarm , in: Date.now...,displayedComponents: [.date, .hourAndMinute])
-                        //.accentColor(.pink)
+                    DatePicker("Alarm", selection: self.$newAlarm , in: task.alarm...,displayedComponents: [.date, .hourAndMinute])
+                        .accentColor(.pink)
                         .fontWeight(.semibold)
                         .padding(.vertical)
+                        .onAppear {
+                            newAlarm = task.alarm
+                        }
                 }
                 
                 Spacer()
@@ -83,26 +92,26 @@ struct EditView: View {
                         date: newAlarm,
                         type: "date",
                         title: "ToDo List",
-                        body: "Hey ! You need to do \(newName) before the \(newDate). It's \(newPriority) priority")
+                        body: "Hey ! You need to do \(newName) before the \(newDate.formatted(.dateTime.weekday(.wide).month(.wide).day())). It's \(newPriority) priority")
                     
                     if !newName.isEmpty  {
                         task.name = newName
-                        self.updateTask()
+                        vm.updateTask()
                     }
                     
                     if  task.priority != newPriority
                     {
                         task.priority = newPriority
-                        self.updateTask()
+                        vm.updateTask()
                     }
                     if task.date != newDate {
                         task.date = newDate
-                        self.updateTask()
+                        vm.updateTask()
                     }
                     
                     if task.alarm != newAlarm {
                         task.alarm = newAlarm
-                        self.updateTask()
+                        vm.updateTask()
                     }
                     
                     dismiss()
@@ -122,22 +131,11 @@ struct EditView: View {
             .padding()
         }
     }
-    
-    private func updateTask() {
-        
-        do {
-            try viewContext.save()
-        }
-        catch {
-            let nsError = error as NSError
-            fatalError("Unresolved error \(nsError.localizedDescription), \(nsError.userInfo)")
-        }
-    }
 }
 
 struct EditView_Previews: PreviewProvider {
     static var previews: some View {
-        let testTask = Task(context: PersistenceController.preview.container.viewContext)
+        let testTask = TaskList(context: PersistenceController.preview.container.viewContext)
         testTask.id = UUID()
         testTask.name = "Test Task"
         testTask.complete = false

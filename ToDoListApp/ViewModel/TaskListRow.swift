@@ -8,17 +8,15 @@
 import SwiftUI
 
 struct TaskListRow: View {
-    @ObservedObject var task: Task
+    @ObservedObject var task: TaskList
     @Environment(\.managedObjectContext) private var viewContext
     
     var body: some View {
         Toggle(isOn: self.$task.complete) {
             HStack {
                 Text(self.task.name)
-                
                 Spacer()
                 Spacer()
-                
                 Circle()
                     .frame(width: 10)
                     .foregroundColor(self.task.priority.priorityColor())
@@ -39,7 +37,7 @@ struct TaskListRow: View {
 
 struct TaskListRow_Previews: PreviewProvider {
     static var previews: some View {
-        let testTask = Task(context: PersistenceController.preview.container.viewContext)
+        let testTask = TaskList(context: PersistenceController.preview.container.viewContext)
         testTask.id = UUID()
         testTask.name = "Test Task"
         testTask.complete = false

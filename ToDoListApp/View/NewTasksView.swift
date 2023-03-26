@@ -11,22 +11,25 @@ struct NewTasksView: View {
  
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) var dismiss
+    @State var vm = ViewModel()
     
     @FetchRequest(
-        entity: Task.entity(),
+        entity: TaskList.entity(),
         sortDescriptors: [
-            NSSortDescriptor(keyPath: \Task.complete, ascending:  true),
-            NSSortDescriptor(keyPath: \Task.priorityNum, ascending:  false),
-            NSSortDescriptor(keyPath: \Task.date, ascending:  false)
+            NSSortDescriptor(keyPath: \TaskList.complete, ascending:  true),
+            NSSortDescriptor(keyPath: \TaskList.priorityNum, ascending:  false),
+            NSSortDescriptor(keyPath: \TaskList.date, ascending:  false),
+            NSSortDescriptor(keyPath: \TaskList.alarm, ascending:  false)
         ],
         animation: .default
     )
     
-    private var tasks: FetchedResults<Task>
+    private var tasks: FetchedResults<TaskList>
     
     @State private var taskName: String = ""
     @State private var taskPriority: Priority = .normal
     @State private var isEditing: Bool = false
+    @State private var isEmpty: Bool = false
     
     @State private var taskdate = Date()
     @State private var taskAlarm = Date()
@@ -49,47 +52,44 @@ struct NewTasksView: View {
                     TextField("New task Name", text:  self.$taskName, onEditingChanged:
                     {
                         self.isEditing = $0
-                        
                     })
+                   // .accessibilityIdentifier("taskName")
                     .padding()
                     .background(Color(.systemGray6))
                     .cornerRadius(10)
                     .padding(.bottom)
                     
                     HStack{
-                        
                         Text("Priority")
                             .fontWeight(.semibold)
                             .padding(.vertical)
-                        
                         Spacer()
-
-                            PriorityView(priorityTitle: "High", selectedPriority: self.$taskPriority)
-                                .onTapGesture {
-                                    self.taskPriority = .high
-                                }
-                            PriorityView(priorityTitle: "Normal", selectedPriority: self.$taskPriority)
-                                .onTapGesture {
-                                    self.taskPriority = .normal
-                                }
-                            PriorityView(priorityTitle: "Low", selectedPriority: self.$taskPriority)
-                                .onTapGesture {
-                                    self.taskPriority = .low
-                                    
-                                }
+                        PriorityView(priorityTitle: "High", selectedPriority: self.$taskPriority)
+                            .onTapGesture {
+                                self.taskPriority = .high
+                            }
+                        PriorityView(priorityTitle: "Normal", selectedPriority: self.$taskPriority)
+                            .onTapGesture {
+                                self.taskPriority = .normal
+                            }
+                        PriorityView(priorityTitle: "Low", selectedPriority: self.$taskPriority)
+                            .onTapGesture {
+                                self.taskPriority = .low
+                                
+                            }
                     }
                     .padding(.bottom)
                     
                     VStack{
                         DatePicker("Date", selection: self.$taskdate , in: Date.now...,displayedComponents: [.date])
-                           //.accentColor(.accentColor)
                             .fontWeight(.semibold)
                             .padding(.vertical)
+                            .accessibilityIdentifier("Date")
                         
                         DatePicker("Alarm", selection: self.$taskAlarm , in: Date.now...,displayedComponents: [.date, .hourAndMinute])
-                            //.accentColor(.accentColor)
                             .fontWeight(.semibold)
                             .padding(.vertical)
+                            .accessibilityIdentifier("Alarm")
                     }
                     
                     Spacer()
@@ -99,14 +99,19 @@ struct NewTasksView: View {
                             date: taskAlarm,
                             type: "date",
                             title: "Date based notification",
-                            body: "Hey ! You need to do \(taskName) before the \(taskdate). It's \($taskPriority) priority")
-                        
+                            body: "Hey ! You need to do \(taskName) before the \(taskdate.formatted(.dateTime.weekday(.wide).month(.wide).day())). It's \(taskPriority) priority")
+
                         guard self.taskName.trimmingCharacters(in: .whitespaces) != ""
                         else {
+                            if self.taskName == "" {
+                                self.isEmpty = true
+                            } else {
+                                self.isEmpty = false
+                            }
                             return
                         }
-                        
-                        self.addNewTask(name: self.taskName, date: self.taskdate, priority: self.taskPriority, alarm: self.taskAlarm)
+
+                        vm.addNewTask(name: self.taskName, date: self.taskdate, priority: self.taskPriority, alarm: self.taskAlarm)
                         
                         dismiss()
                         
@@ -121,26 +126,17 @@ struct NewTasksView: View {
                     }
                     .cornerRadius(10)
                     .padding(.vertical)
+                    .alert("Oh !", isPresented: $isEmpty) {
+                        Button("Confirm") {
+                            isEmpty.toggle()
+                        }
+                    } message: {
+                        Text("Please, write a name")
+                    }
                 }
+                .accessibilityIdentifier("AddButton")
                 .padding()
             }
-        }
-    }
-    
-    private func addNewTask(name: String, date: Date, priority: Priority, alarm: Date) -> Void {
-        let newTask  = Task(context: viewContext)
-        newTask.id = UUID()
-        newTask.name = name
-        newTask.priority = priority
-        newTask.complete = false
-        newTask.order = (tasks.last?.order ?? 0) + 1
-        newTask.date = date
-        newTask.alarm = alarm
-        
-        do {
-            try viewContext.save()
-        } catch {
-            print(error.localizedDescription)
         }
     }
 }

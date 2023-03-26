@@ -7,8 +7,15 @@
 
 import Foundation
 import UserNotifications
+import UIKit
 
-class NotificationHandler {
+class NotificationHandler: NSObject, UIApplicationDelegate  {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        // Show local notification in foreground when app is open
+        UNUserNotificationCenter.current().delegate = self
+        return true
+    }
+
     func askPermission() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
             if success {
@@ -39,5 +46,13 @@ class NotificationHandler {
         // Create the request
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         UNUserNotificationCenter.current().add(request)
+        
+    }
+}
+
+// Conform to UNUserNotificationCenterDelegate to show local notification in foreground
+extension NotificationHandler: UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.alert, .badge, .sound])
     }
 }

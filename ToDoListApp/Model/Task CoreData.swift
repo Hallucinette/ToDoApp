@@ -8,8 +8,8 @@
 import SwiftUI
 import CoreData
 
-@objc(Task)
-public class Task: NSManagedObject {
+@objc(TaskList)
+public class TaskList: NSManagedObject {
     @NSManaged public var id: UUID
     @NSManaged public var name: String
     @NSManaged public var complete: Bool
@@ -19,7 +19,7 @@ public class Task: NSManagedObject {
     @NSManaged public var alarm: Date
 }
 
-extension Task: Identifiable {
+extension TaskList: Identifiable {
     var priority: Priority {
         get {
             Priority(rawValue: Int(priorityNum)) ?? .normal
@@ -37,24 +37,20 @@ enum Priority: Int {
     case high = 2
     
     var priorityType: String {
-        switch rawValue {
-        case Priority.low.rawValue: return "low"
-        case Priority.normal.rawValue: return "normal"
-        case Priority.high.rawValue: return "high"
-            
-        default: return ""
+        switch self {
+        case Priority.low : return "low"
+        case Priority.normal : return "normal"
+        case Priority.high : return "high"
         }
     }
     
     // to set color for each type of priorities
     
     func priorityColor() -> Color {
-        switch rawValue {
-        case Priority.low.rawValue: return .green
-        case Priority.normal.rawValue: return .orange
-        case Priority.high.rawValue: return .red
-            
-        default: return .orange
+        switch self {
+        case Priority.low : return .green
+        case Priority.normal : return .orange
+        case Priority.high : return .red
         }
     }
 }

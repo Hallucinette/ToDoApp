@@ -11,6 +11,7 @@ import SwiftUI
 struct ToDoListAppApp: App {
     
     let persistenceController = PersistenceController.shared
+    @UIApplicationDelegateAdaptor(NotificationHandler.self) var notificationHandler
 
     var body: some Scene {
         WindowGroup {

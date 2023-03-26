@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AlertView: View {
-    @ObservedObject var task: Task
+    @ObservedObject var task: TaskList
     @Environment(\.managedObjectContext) private var viewContext
     
     var body: some View {
@@ -23,7 +23,7 @@ struct AlertView: View {
                 Text(String(task.date.formatted(.dateTime.day().month().year())))
                     .font(.system(size: 26, weight: .black, design: .serif))
                     .fontWeight(.bold)
-                Text(String(task.date.formatted(.dateTime.minute().hour())))
+                Text(String(task.alarm.formatted(.dateTime.minute().hour())))
                     .font(.system(size: 26, weight: .black, design: .serif))
                     .fontWeight(.bold)
             }
@@ -35,7 +35,7 @@ struct AlertView: View {
 
 struct AlertView_Previews: PreviewProvider {
     static var previews: some View {
-        let testTask = Task(context: PersistenceController.preview.container.viewContext)
+        let testTask = TaskList(context: PersistenceController.preview.container.viewContext)
         testTask.id = UUID()
         testTask.name = "Test Task"
         testTask.complete = false

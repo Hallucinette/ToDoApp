@@ -32,8 +32,8 @@ struct PersistenceController {
     init(inMemory: Bool = false) {
         //Creatinf the entity
         let taskEntity = NSEntityDescription()
-        taskEntity.name = "Task"
-        taskEntity.managedObjectClassName = "Task"
+        taskEntity.name = "TaskList"
+        taskEntity.managedObjectClassName = "TaskList"
         
         // now creating the attribute
         let idAttribute = NSAttributeDescription()
@@ -77,7 +77,7 @@ struct PersistenceController {
         let model = NSManagedObjectModel()
         model.entities = [taskEntity]
         
-        container = NSPersistentContainer(name: "ToDoListApp", managedObjectModel: model)
+        container = NSPersistentContainer(name: "ToDoList", managedObjectModel: model)
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
         }

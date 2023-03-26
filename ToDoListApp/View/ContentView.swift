@@ -10,20 +10,20 @@ import CoreData
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
+    @State var vm = ViewModel()
     
     @FetchRequest(
-        entity: Task.entity(),
+        entity: TaskList.entity(),
         sortDescriptors: [
-            NSSortDescriptor(keyPath: \Task.complete, ascending:  true),
-            NSSortDescriptor(keyPath: \Task.order, ascending:  true),
-            NSSortDescriptor(keyPath: \Task.date, ascending: true),
-            NSSortDescriptor(keyPath: \Task.priorityNum, ascending:  false)
-        
+            NSSortDescriptor(keyPath: \TaskList.complete, ascending:  true),
+            NSSortDescriptor(keyPath: \TaskList.order, ascending:  true),
+            NSSortDescriptor(keyPath: \TaskList.date, ascending: true),
+            NSSortDescriptor(keyPath: \TaskList.priorityNum, ascending:  false)
         ],
         animation: .default
     )
     
-    private var tasks: FetchedResults<Task>
+    private var tasks: FetchedResults<TaskList>
     let notify = NotificationHandler()
 
     @State private var searchText: String = ""
@@ -33,7 +33,7 @@ struct ContentView: View {
         NavigationView{
             ZStack {
                 Form {
-                    ForEach(tasks.filter { searchText.isEmpty ? true : $0.name.contains(searchText)}) { task in
+                    ForEach(tasks.filter { searchText.isEmpty ? true : $0.name.localizedCaseInsensitiveContains(searchText)}) { task in
                         NavigationLink {
                             DetailView(task: task)
                         } label: {
@@ -43,32 +43,32 @@ struct ContentView: View {
                         }
                     }
                     .onMove(perform: moveTask)
-                    .onDelete(perform: deleteTask)
+                    .onDelete(perform:  withAnimation { deleteTask })
                 }
-                
-//                ZStack {
-//                    VStack{
-//                        Text("Not working Notification?")
-//                            .foregroundColor(.gray)
-//                            .italic()
-//                        Button("Request permissions") {
-//                            notify.askPermission()
-//                        }
-//                    }
-//                }
                 if tasks.count == 0 {
-                    VStack{
-                        Image("no-data")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 200, height: 200)
-                        Text("Add a New Task")
-                            .font(.title)
-                            .fontWeight(.bold)
-                            .foregroundColor(.accentColor)
+                    ZStack {
+                        VStack{
+                            Image("no-data")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 200, height: 200)
+                            Text("Add a New Task")
+                                .font(.title)
+                                .fontWeight(.bold)
+                                .foregroundColor(.accentColor)
+                        }
                     }
                 }
-        }
+                VStack {
+                    Spacer()
+                    Text("Not working Notification?")
+                        .foregroundColor(.gray)
+                        .italic()
+                    Button("Request permissions") {
+                        notify.askPermission()
+                    }
+                }
+            }
             .navigationTitle("Task")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -78,6 +78,7 @@ struct ContentView: View {
                         Image(systemName: "plus.circle.fill")
                             .foregroundColor(.accentColor)
                     })
+                    .accessibilityIdentifier("AddButton")
                 }
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -90,8 +91,13 @@ struct ContentView: View {
         }
         .searchable(text: self.$searchText)
     }
-    
-    private func moveTask(at sets:IndexSet,destination:Int){
+
+    func deleteTask(index: IndexSet) -> Void {
+        index.map { tasks[$0] }.forEach(viewContext.delete)
+        vm.updateTask()
+    }
+
+    func moveTask(at sets:IndexSet,destination:Int){
         let TaskToMove = sets.first!
         
         if TaskToMove < destination{
@@ -117,33 +123,13 @@ struct ContentView: View {
             }
             tasks[TaskToMove].order = newOrder
         }
-        
-        do{
-            try viewContext.save()
-        }
-        catch{
-            print(error.localizedDescription)
-        }
-    }
-    
-    private func deleteTask(index: IndexSet) -> Void {
-        withAnimation {
-            index.map { tasks[$0] }.forEach(viewContext.delete)
-
-            do {
-                try viewContext.save()
-            }
-            catch {
-                let nsError = error as NSError
-                print(nsError.localizedDescription)
-            }
-        }
+        vm.updateTask()
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        let testTask = Task(context: PersistenceController.preview.container.viewContext)
+        let testTask = TaskList(context: PersistenceController.preview.container.viewContext)
         testTask.id = UUID()
         testTask.name = "Test Task"
         testTask.complete = false

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CalendarRectangleView: View {
     
-    @ObservedObject var task: Task
+    @ObservedObject var task: TaskList
     @Environment(\.managedObjectContext) private var viewContext
     
     var body: some View {
@@ -27,9 +27,6 @@ struct CalendarRectangleView: View {
                 Text(String(task.date.formatted(.dateTime.month(.wide))))
                     .font(.system(size: 36, weight: .black, design: .serif))
                     .fontWeight(.bold)
-                Text(String(task.date.formatted(.dateTime.hour().minute())))
-                    .font(.system(size: 26, weight: .black, design: .serif))
-                    .fontWeight(.bold)
                     .padding()
             }
         }
@@ -38,7 +35,7 @@ struct CalendarRectangleView: View {
 
 struct DetailTaskView_Previews: PreviewProvider {
     static var previews: some View {
-        let testTask = Task(context: PersistenceController.preview.container.viewContext)
+        let testTask = TaskList(context: PersistenceController.preview.container.viewContext)
         testTask.id = UUID()
         testTask.name = "Test Task"
         testTask.complete = false
