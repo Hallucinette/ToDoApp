@@ -94,6 +94,7 @@ struct ContentView: View {
                 }
             }
         }
+        .navigationViewStyle(.stack)
         .searchable(text: self.$searchText)
     }
 

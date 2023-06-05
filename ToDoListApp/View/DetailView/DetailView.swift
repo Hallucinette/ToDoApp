@@ -13,16 +13,14 @@ struct DetailView: View {
     
     
     var body: some View {
-        NavigationView() {
-            VStack{
-                Spacer()
-                
-                CalendarRectangleView(task: task)
-                    .padding()
-                AlertView(task: task)
-                
-                Spacer()
-            }
+        VStack{
+            Spacer()
+            
+            CalendarRectangleView(task: task)
+                .padding()
+            AlertView(task: task)
+            
+            Spacer()
         }
         .navigationTitle(String(task.name))
         .navigationBarTitleDisplayMode(.inline)
