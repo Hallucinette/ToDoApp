@@ -51,6 +51,15 @@ class ViewModel: ObservableObject {
             saveTask()
         }
     }
+    
+    func completedTask(task: TaskList) {
+        if task.complete == true {
+            NotificationManager().removePendingNotification(id: task.id.uuidString)
+            }
+        else {
+            scheduleNotification(task: task)
+        }
+    }
 
     func addNewTask(name: String, date: Date, priority: Priority, alarm: Date) -> Void {
         let newTask  = TaskList(context: viewContext)

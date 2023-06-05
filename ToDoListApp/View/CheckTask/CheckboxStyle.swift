@@ -26,7 +26,7 @@ struct CheckboxStyle: ToggleStyle {
 
 struct CheckboxStyle_Previews: PreviewProvider {
     static var previews: some View {
-        Group{
+        VStack {
             Toggle(isOn: .constant(true)) {
                 Text("Toggle is on")
             }

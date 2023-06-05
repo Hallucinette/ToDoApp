@@ -16,7 +16,6 @@ struct ToDoListAppApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-          //  NotificationView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }

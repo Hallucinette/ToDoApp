@@ -16,7 +16,6 @@
 		7B5CE78729657E0300AAF8EA /* Task CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5CE78629657E0300AAF8EA /* Task CoreData.swift */; };
 		7B5CE789296580FB00AAF8EA /* TaskListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5CE788296580FB00AAF8EA /* TaskListRow.swift */; };
 		7B5CE78B2965838200AAF8EA /* CheckboxStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5CE78A2965838200AAF8EA /* CheckboxStyle.swift */; };
-		7B5CE78D296590FE00AAF8EA /* BlankView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5CE78C296590FE00AAF8EA /* BlankView.swift */; };
 		7B5CE78F2965945300AAF8EA /* NewTasksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5CE78E2965945300AAF8EA /* NewTasksView.swift */; };
 		7B5CE79129659A7A00AAF8EA /* PriorityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5CE79029659A7A00AAF8EA /* PriorityView.swift */; };
 		7B5CE7962966E30B00AAF8EA /* CalendarRectangleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5CE7952966E30B00AAF8EA /* CalendarRectangleView.swift */; };
@@ -64,7 +63,6 @@
 		7B5CE78629657E0300AAF8EA /* Task CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task CoreData.swift"; sourceTree = "<group>"; };
 		7B5CE788296580FB00AAF8EA /* TaskListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListRow.swift; sourceTree = "<group>"; };
 		7B5CE78A2965838200AAF8EA /* CheckboxStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxStyle.swift; sourceTree = "<group>"; };
-		7B5CE78C296590FE00AAF8EA /* BlankView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankView.swift; sourceTree = "<group>"; };
 		7B5CE78E2965945300AAF8EA /* NewTasksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTasksView.swift; sourceTree = "<group>"; };
 		7B5CE79029659A7A00AAF8EA /* PriorityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriorityView.swift; sourceTree = "<group>"; };
 		7B5CE7952966E30B00AAF8EA /* CalendarRectangleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarRectangleView.swift; sourceTree = "<group>"; };
@@ -151,10 +149,10 @@
 		7B5CE7922966D8E800AAF8EA /* View */ = {
 			isa = PBXGroup;
 			children = (
-				7B5CE78E2965945300AAF8EA /* NewTasksView.swift */,
 				7B5CE7752965773500AAF8EA /* ContentView.swift */,
-				7B5CE7C229675DB700AAF8EA /* EditView.swift */,
-				7B5CE7972966E75B00AAF8EA /* DetailView.swift */,
+				7BA6DB232A2DE5BB007169BD /* CreatTask */,
+				7BA6DB212A2DE3BA007169BD /* CheckTask */,
+				7BA6DB222A2DE503007169BD /* DetailView */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -162,13 +160,7 @@
 		7B5CE7932966D91400AAF8EA /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				7B5CE79029659A7A00AAF8EA /* PriorityView.swift */,
-				7B5CE78C296590FE00AAF8EA /* BlankView.swift */,
 				7BD5EC4729AF68B400D662A1 /* ViewModel.swift */,
-				7B5CE7952966E30B00AAF8EA /* CalendarRectangleView.swift */,
-				7BAC3AE52968721200266742 /* AlertView.swift */,
-				7B5CE788296580FB00AAF8EA /* TaskListRow.swift */,
-				7B5CE78A2965838200AAF8EA /* CheckboxStyle.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -178,10 +170,47 @@
 			children = (
 				7B5CE77C2965773700AAF8EA /* Persistence.swift */,
 				7B5CE78629657E0300AAF8EA /* Task CoreData.swift */,
+				7BA6DB242A2DE633007169BD /* Notification */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		7BA6DB212A2DE3BA007169BD /* CheckTask */ = {
+			isa = PBXGroup;
+			children = (
+				7B5CE788296580FB00AAF8EA /* TaskListRow.swift */,
+				7B5CE78A2965838200AAF8EA /* CheckboxStyle.swift */,
+			);
+			path = CheckTask;
+			sourceTree = "<group>";
+		};
+		7BA6DB222A2DE503007169BD /* DetailView */ = {
+			isa = PBXGroup;
+			children = (
+				7B5CE7972966E75B00AAF8EA /* DetailView.swift */,
+				7B5CE7952966E30B00AAF8EA /* CalendarRectangleView.swift */,
+				7BAC3AE52968721200266742 /* AlertView.swift */,
+			);
+			path = DetailView;
+			sourceTree = "<group>";
+		};
+		7BA6DB232A2DE5BB007169BD /* CreatTask */ = {
+			isa = PBXGroup;
+			children = (
+				7B5CE78E2965945300AAF8EA /* NewTasksView.swift */,
+				7B5CE79029659A7A00AAF8EA /* PriorityView.swift */,
+				7B5CE7C229675DB700AAF8EA /* EditView.swift */,
+			);
+			path = CreatTask;
+			sourceTree = "<group>";
+		};
+		7BA6DB242A2DE633007169BD /* Notification */ = {
+			isa = PBXGroup;
+			children = (
 				7BAC3AE02968616B00266742 /* Notifications.swift */,
 				7BA6DB1F2A2CF391007169BD /* NotificationManager.swift */,
 			);
-			path = Model;
+			path = Notification;
 			sourceTree = "<group>";
 		};
 		7BD5EC8F29AF99FB00D662A1 /* ToDoListAppTests */ = {
@@ -343,7 +372,6 @@
 				7BAC3AE12968616B00266742 /* Notifications.swift in Sources */,
 				7B5CE789296580FB00AAF8EA /* TaskListRow.swift in Sources */,
 				7BA6DB202A2CF391007169BD /* NotificationManager.swift in Sources */,
-				7B5CE78D296590FE00AAF8EA /* BlankView.swift in Sources */,
 				7B5CE7742965773500AAF8EA /* ToDoListAppApp.swift in Sources */,
 				7BAC3AE62968721200266742 /* AlertView.swift in Sources */,
 				7B5CE78F2965945300AAF8EA /* NewTasksView.swift in Sources */,

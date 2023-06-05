@@ -41,6 +41,9 @@ struct ContentView: View {
                                 TaskListRow(task: task)
                             }
                         }
+                        .onAppear {
+                            vm.completedTask(task: task)
+                        }
                     }
                     .onMove(perform: moveTask)
                     .onDelete { indexSet in
