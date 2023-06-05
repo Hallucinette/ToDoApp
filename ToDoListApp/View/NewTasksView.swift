@@ -95,12 +95,6 @@ struct NewTasksView: View {
                     Spacer()
                     
                     Button {
-                        notify.sendNotification(
-                            date: taskAlarm,
-                            type: "date",
-                            title: "Date based notification",
-                            body: "Hey ! You need to do \(taskName) before the \(taskdate.formatted(.dateTime.weekday(.wide).month(.wide).day())). It's \(taskPriority) priority")
-
                         guard self.taskName.trimmingCharacters(in: .whitespaces) != ""
                         else {
                             if self.taskName == "" {

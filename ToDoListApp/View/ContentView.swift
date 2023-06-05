@@ -43,7 +43,9 @@ struct ContentView: View {
                         }
                     }
                     .onMove(perform: moveTask)
-                    .onDelete(perform:  withAnimation { deleteTask })
+                    .onDelete { indexSet in
+                        vm.deleteTask(offsets: indexSet, tasks: tasks)
+                    }
                 }
                 if tasks.count == 0 {
                     ZStack {
@@ -92,12 +94,7 @@ struct ContentView: View {
         .searchable(text: self.$searchText)
     }
 
-    func deleteTask(index: IndexSet) -> Void {
-        index.map { tasks[$0] }.forEach(viewContext.delete)
-        vm.updateTask()
-    }
-
-    func moveTask(at sets:IndexSet,destination:Int){
+    func moveTask(at sets:IndexSet, destination:Int){
         let TaskToMove = sets.first!
         
         if TaskToMove < destination{
@@ -123,7 +120,7 @@ struct ContentView: View {
             }
             tasks[TaskToMove].order = newOrder
         }
-        vm.updateTask()
+        vm.saveTask()
     }
 }
 

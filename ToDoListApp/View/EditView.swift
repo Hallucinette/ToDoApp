@@ -87,33 +87,7 @@ struct EditView: View {
                 Spacer()
                
                 Button {
-                    
-                    notify.sendNotification(
-                        date: newAlarm,
-                        type: "date",
-                        title: "ToDo List",
-                        body: "Hey ! You need to do \(newName) before the \(newDate.formatted(.dateTime.weekday(.wide).month(.wide).day())). It's \(newPriority) priority")
-                    
-                    if !newName.isEmpty  {
-                        task.name = newName
-                        vm.updateTask()
-                    }
-                    
-                    if  task.priority != newPriority
-                    {
-                        task.priority = newPriority
-                        vm.updateTask()
-                    }
-                    if task.date != newDate {
-                        task.date = newDate
-                        vm.updateTask()
-                    }
-                    
-                    if task.alarm != newAlarm {
-                        task.alarm = newAlarm
-                        vm.updateTask()
-                    }
-                    
+                    vm.updateTask(newName: newName, newDate: newDate, newPriority: newPriority, newAlarm: newAlarm, task: task)
                     dismiss()
                     
                 } label: {

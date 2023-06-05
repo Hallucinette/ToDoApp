@@ -22,6 +22,7 @@
 		7B5CE7962966E30B00AAF8EA /* CalendarRectangleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5CE7952966E30B00AAF8EA /* CalendarRectangleView.swift */; };
 		7B5CE7982966E75B00AAF8EA /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5CE7972966E75B00AAF8EA /* DetailView.swift */; };
 		7B5CE7C329675DB700AAF8EA /* EditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5CE7C229675DB700AAF8EA /* EditView.swift */; };
+		7BA6DB202A2CF391007169BD /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BA6DB1F2A2CF391007169BD /* NotificationManager.swift */; };
 		7BAC3AE12968616B00266742 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAC3AE02968616B00266742 /* Notifications.swift */; };
 		7BAC3AE62968721200266742 /* AlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAC3AE52968721200266742 /* AlertView.swift */; };
 		7BD5EC4829AF68B400D662A1 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD5EC4729AF68B400D662A1 /* ViewModel.swift */; };
@@ -69,6 +70,7 @@
 		7B5CE7952966E30B00AAF8EA /* CalendarRectangleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarRectangleView.swift; sourceTree = "<group>"; };
 		7B5CE7972966E75B00AAF8EA /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		7B5CE7C229675DB700AAF8EA /* EditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditView.swift; sourceTree = "<group>"; };
+		7BA6DB1F2A2CF391007169BD /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		7BAC3AE02968616B00266742 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		7BAC3AE52968721200266742 /* AlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertView.swift; sourceTree = "<group>"; };
 		7BD5EC4729AF68B400D662A1 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 				7B5CE77C2965773700AAF8EA /* Persistence.swift */,
 				7B5CE78629657E0300AAF8EA /* Task CoreData.swift */,
 				7BAC3AE02968616B00266742 /* Notifications.swift */,
+				7BA6DB1F2A2CF391007169BD /* NotificationManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -339,6 +342,7 @@
 				7B5CE7C329675DB700AAF8EA /* EditView.swift in Sources */,
 				7BAC3AE12968616B00266742 /* Notifications.swift in Sources */,
 				7B5CE789296580FB00AAF8EA /* TaskListRow.swift in Sources */,
+				7BA6DB202A2CF391007169BD /* NotificationManager.swift in Sources */,
 				7B5CE78D296590FE00AAF8EA /* BlankView.swift in Sources */,
 				7B5CE7742965773500AAF8EA /* ToDoListAppApp.swift in Sources */,
 				7BAC3AE62968721200266742 /* AlertView.swift in Sources */,
